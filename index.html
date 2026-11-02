@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interaktywne demo portalu projektów: zadania, role, KPI i symulacja powiadomień. Wyłącznie syntetyczne dane, bez logowania i usług zewnętrznych.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta name="color-scheme" content="light">
+  <title>Portal projektów — interaktywne demo</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.mjs"></script>
+</head>
+<body>
+  <a class="skip" href="#workspace">Przejdź do projektu</a>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Portal projektów, strona główna"><span class="brand-mark" aria-hidden="true">p.</span> portal projektów <span class="demo-pill">DEMO</span></a>
+    <div class="top-actions"><span class="local-label"><span class="dot"></span> Tylko w pamięci przeglądarki</span><button id="reset" class="button quiet" type="button">Resetuj demo</button></div>
+  </header>
+  <main class="shell">
+    <section class="intro" aria-labelledby="intro-title">
+      <div><p class="eyebrow">OD BRIEFU DO GOTOWEJ REALIZACJI</p><h1 id="intro-title">Klient i zespół.<br>Wspólny obraz pracy.</h1><p class="lead">Portal, który zamienia ustalenia w zadania, pokazuje postęp i wskazuje, na kogo czeka kolejny krok.</p></div>
+      <div class="demo-note"><span class="small-label">O TEJ PREZENTACJI</span><p>Wszystkie projekty i osoby są <strong>fikcyjne</strong>. Demo działa bez konta, kluczy API i połączeń z usługami.</p><p class="muted">Scenariusz: 28 października 2026.<br>Zmiany znikają po odświeżeniu lub resecie.</p></div>
+    </section>
+    <section class="walkthrough" aria-label="Wypróbuj w trzech krokach">
+      <div class="walk-title">Wypróbuj<br><strong>w 60 sekund</strong></div>
+      <p><span>01</span>Zmień status zadania<br><strong>Zobacz aktualizację postępu</strong></p>
+      <p><span>02</span>Przełącz widok na klienta<br><strong>Sprawdź podział odpowiedzialności</strong></p>
+      <p><span>03</span>Dodaj komentarz z powiadomieniem<br><strong>Sprawdź symulację w outboxie właściciela</strong></p>
+    </section>
+    <section class="workspace" id="workspace" aria-label="Interaktywny portal">
+      <aside class="sidebar">
+        <label class="small-label" for="role">PERSPEKTYWA</label>
+        <select id="role"><option value="wlasciciel">Właściciel · wszystkie projekty</option><option value="klient">Klient demo A · mój projekt</option></select>
+        <p id="role-note" class="role-note"></p>
+        <div class="sidebar-heading"><h2>Projekty</h2><span id="project-count" class="count"></span></div>
+        <nav id="project-list" aria-label="Wybierz projekt"></nav>
+        <div class="sidebar-foot"><span class="dot"></span><div><strong>Tryb prezentacyjny</strong><br>Brak wysyłki wiadomości.<br>Brak połączenia z bazą.</div></div>
+      </aside>
+      <div class="project-workspace">
+        <div class="project-heading"><div><p id="client-name" class="eyebrow"></p><h2 id="project-name"></h2><p id="project-description" class="muted"></p></div><span class="synthetic-label">DANE SYNTETYCZNE</span></div>
+        <div id="stats" class="stats" aria-label="Podsumowanie projektu"></div>
+        <div class="work-grid">
+          <section class="card tasks-card" aria-labelledby="tasks-title"><div class="card-heading"><div><span class="small-label">CO DALEJ</span><h3 id="tasks-title">Plan pracy</h3></div><span id="tasks-count" class="muted"></span></div><div id="tasks"></div></section>
+          <aside class="right-column">
+            <section class="card" aria-labelledby="kpi-title"><div class="card-heading"><div><span class="small-label">TYDZIEŃ 26.10–01.11</span><h3 id="kpi-title">Postęp delivery</h3></div></div><div id="kpis"></div></section>
+            <section class="card conversation" aria-labelledby="conversation-title"><div class="card-heading"><div><span class="small-label">PRZY ZADANIU</span><h3 id="conversation-title">Ustalenia zespołu</h3></div></div><label class="field-label" for="comment-task">Wybierz zadanie</label><select id="comment-task"></select><div id="comments" class="comments"></div>
+              <form id="comment-form"><label class="field-label" for="comment-text">Nowy komentarz</label><textarea id="comment-text" maxlength="600" rows="3" required placeholder="Wpisz przykładową uwagę…"></textarea><p class="field-help">Wpisuj wyłącznie przykładową treść.</p><label class="check-label"><input type="checkbox" id="notify" checked> Dodaj powiadomienie do symulowanego outboxa</label><button class="button primary" type="submit">Dodaj komentarz <span aria-hidden="true">↗</span></button></form>
+            </section>
+          </aside>
+        </div>
+        <section id="outbox-section" class="card outbox" aria-labelledby="outbox-title"><div class="card-heading"><div><span class="small-label">ZAMIAST INTEGRACJI POCZTOWEJ</span><h3 id="outbox-title">Outbox · symulacja</h3></div><span class="simulation-pill">Nic nie jest wysyłane</span></div><p class="muted">Komentarz z zaznaczonym powiadomieniem lub przycisk „Symuluj przypisanie” tworzy wyłącznie lokalny wpis. Odbiorca to niedostarczalny adres przykładowy.</p><div id="outbox"></div></section>
+      </div>
+    </section>
+    <details class="architecture"><summary>Jak działa demo i gdzie kończy się symulacja?</summary><div class="architecture-grid"><div><h3>Przeglądarka</h3><p><code>app.mjs</code> renderuje interfejs. <code>store.mjs</code> odwzorowuje kontrakty projektów, zadań, komentarzy i tygodniowych KPI. Stan istnieje wyłącznie w pamięci.</p></div><div><h3>Oryginalny portal</h3><p>Pierwotna implementacja używała Supabase Auth, PostgreSQL z RLS, RPC i Storage. Publiczna prezentacja ma osobny adapter demonstracyjny. Przełącznik widoków nie jest mechanizmem uwierzytelniania.</p></div><div><h3>Zakres demonstracji</h3><p>Można sprawdzić przepływ pracy i kontrakty danych. Demo nie obejmuje plików, prawdziwego logowania, poczty, Realtime ani modeli AI. Nie stanowi testu bezpieczeństwa serwera.</p></div></div></details>
+  </main>
+  <footer>Portal projektów <span>Projekt portfolio Jakuba Dzwoniarskiego · interaktywna prezentacja</span><span>HTML · CSS · JavaScript · model danych portalu</span></footer>
+  <div id="notice" role="status" aria-live="polite" hidden></div>
+  <noscript><p class="noscript">Włącz JavaScript, aby uruchomić lokalną demonstrację.</p></noscript>
+</body>
+</html>
