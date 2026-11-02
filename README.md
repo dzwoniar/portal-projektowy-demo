@@ -4,6 +4,13 @@ Interaktywna prezentacja portalu współpracy agencji z klientem. Pokazuje podzi
 
 **[Otwórz interaktywne demo](https://dzwoniar.github.io/portal-projektowy-demo/)** · [CI](https://github.com/dzwoniar/portal-projektowy-demo/actions)
 
+<details>
+<summary>Podgląd interfejsu</summary>
+
+![Portal projektów — syntetyczny scenariusz](docs/preview.png)
+
+</details>
+
 ## Uruchomienie
 
 ```sh
